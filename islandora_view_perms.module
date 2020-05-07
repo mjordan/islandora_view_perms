@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Contains islandora_view_perms.module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function islandora_view_perms_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $utils = \Drupal::service('islandora.utils');
+
+  // Get the media, then the media's node and check if user can view it.
+  $entity_type_id = $entity->getEntityTypeId();
+  if ($entity_type_id == 'media') {
+    $media_id = $entity->id();
+    $media = \Drupal::entityTypeManager()->getStorage($entity_type_id)->load($media_id);
+    $node = $utils->getParentNode($media);
+    if (!$node->access('view')) {
+      throw new AccessDeniedHttpException();
+    } 
+  }
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function islandora_view_perms_file_download($uri) {
+  // Get file ID.
+  $database = \Drupal::database();
+  $result = $database->query("SELECT fid FROM {file_managed} WHERE uri = :uri", [':uri' => $uri]);
+  if ($result) {
+    $row = $result->fetchAssoc();
+    $fid = $row['fid'];
+  }
+
+  // Get the file's media, then the media's node and check if user can view it.
+  $utils = \Drupal::service('islandora.utils');
+  $medias = $utils->getReferencingMedia($fid);  
+  foreach ($medias as $mid => $media) {
+    $node = $utils->getParentNode($media);
+    if (!$node->access('view')) {
+      return -1;
+    } 
+  }
+}

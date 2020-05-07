@@ -1,0 +1,7 @@
+name: 'Islandora View Perms'
+description: "Proof of concept module to allow child nodes and media to inherit their parent's view permissions."
+type: module
+package: Islandora
+core: 8.x
+dependencies:
+  - islandora
