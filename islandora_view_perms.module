@@ -22,6 +22,8 @@ function islandora_view_perms_entity_view(array &$build, EntityInterface $entity
     $media = \Drupal::entityTypeManager()->getStorage($entity_type_id)->load($media_id);
     $node = $utils->getParentNode($media);
     if (!$node->access('view')) {
+      // If the user isn't allowed to view the node, tell Drupal to block
+      // access to the media entity currently being requested.
       throw new AccessDeniedHttpException();
     } 
   }
@@ -45,6 +47,8 @@ function islandora_view_perms_file_download($uri) {
   foreach ($medias as $mid => $media) {
     $node = $utils->getParentNode($media);
     if (!$node->access('view')) {
+      // If the user isn't allowed to view the media, return -1 to tell
+      // Drupal to block access to the file currently being requested.
       return -1;
     } 
   }
