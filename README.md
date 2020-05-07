@@ -11,7 +11,7 @@ Inferring authorization could be extended upward from node to parent node, inclu
 
 ## Requirements and installation
 
-No requirements other than files must be stored on Drupal's private file system. Installation is the same as for any other Drupal 8 module.
+No requirements other than files must be stored on Drupal's private file system. Installation is the same as for any other Drupal 8 module. e.g., within your Drupal's `web/modules/contrib` folder, run `https://github.com/mjordan/islandora_view_perms.git`.
 
 ## How to test
 
