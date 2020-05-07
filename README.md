@@ -5,7 +5,7 @@ This module provides proof of concept code for the idea described in https://git
 The idea is that we can infer whether a user is authorized to view a file, and the media that wraps that file, based on whether the user is authorized to view the node the media is associated with. Put another way, if a user is authorized to view a node, we can assume that they are also authorized to view any media associated with the node and those media's files. 
 If the user is not authorized to view a node, we can assume they are also not authorized to view the meida associated with the node and the file that is associated with the media.
 
-This module demonstrates a method for inferring authorization on nodes, media, and files. Of course there are use cases that do not adhere to these assumptions, but this proof of concept is intended only to demonstrate that we can infer view authorization from node all the way down to file.
+This module demonstrates a method for inferring authorization on nodes, media, and files. Of course there are use cases that do not adhere to these assumptions, but this proof of concept is intended only to demonstrate that we can infer view authorization from node all the way down to file. This technique also only applies to viewing content, and not adding nodes to collections or updating locked down content.
 
 Inferring authorization could be extended upward from node to parent node, including parent nodes that are compound objects/books/newspaper issue or collection objects.
 
