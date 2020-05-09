@@ -44,6 +44,10 @@ function islandora_view_perms_file_download($uri) {
   // Get the file's media, then the media's node and check if user can view it.
   $utils = \Drupal::service('islandora.utils');
   $medias = $utils->getReferencingMedia($fid);  
+  // If the file has no media, or is not managed by Islandora, don't intefere with the download.
+  if (count($medias) == 0) {
+    return NULL;
+  }
   foreach ($medias as $mid => $media) {
     $node = $utils->getParentNode($media);
     if (!$node->access('view')) {
